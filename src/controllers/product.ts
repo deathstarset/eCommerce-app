@@ -23,12 +23,21 @@ export const getAllProducts = asyncWrapper(
     res: express.Response,
     next: express.NextFunction
   ) => {
-    const products = await ProductModel.find({});
+    const { sort = "price", limit = 5, page = 1 } = req.query;
+    const offset = (+page - 1) * +limit;
+
+    const products = await ProductModel.find({})
+      .sort(sort as string)
+      .skip(offset)
+      .limit(limit as number);
+    const totalProducts = await ProductModel.countDocuments();
     res.status(200).json({
       success: true,
       message: "Products Found Succefully",
       data: {
         products,
+        totalPages: Math.ceil(totalProducts / +limit),
+        currentPage: +page,
       },
     });
   }
@@ -87,7 +96,7 @@ export const editProduct = asyncWrapper(
     if (!product) {
       return next(Error("Product Not Found"));
     }
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Product Edited Succefully",
       data: { newProduct: product },
