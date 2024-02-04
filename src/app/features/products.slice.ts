@@ -1,70 +1,79 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store";
-import type { Product } from "@/types";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { productsApi } from "../services/products.api";
-interface ProductsState {
-  products: Product[] | undefined;
-  totalPages: number | undefined;
+import { Product } from "@/types";
+import { PayloadAction } from "@reduxjs/toolkit";
+type InitialStateType = {
+  products: Product[] | null;
+  totalPages: number | null;
   currentPage: number;
-  countPerPage: number;
-}
-
-const initialState: ProductsState = {
-  products: undefined,
-  totalPages: undefined,
+};
+const initialState: InitialStateType = {
+  products: null,
+  totalPages: null,
   currentPage: 1,
-  countPerPage: 5,
+};
+
+type ResponseType = {
+  success: boolean;
+  message: string;
+  data: {
+    products: Product[];
+    currentPage: number;
+    totalPages: number;
+  };
+};
+
+type ArgsType = {
+  sort?: string;
+  limit?: number;
+  page?: number;
 };
 
 const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    nextPage: (state) => {
-      if (state.totalPages) {
-        if (state.currentPage < state.totalPages) {
-          state.currentPage += 1;
-        }
-      }
+    setProducts(state, action: PayloadAction<InitialStateType>) {
+      state.products = action.payload.products;
+      state.totalPages = action.payload.totalPages;
+      state.currentPage = action.payload.currentPage;
     },
-    previousPage: (state) => {
-      if (state.currentPage >= 2) {
-        state.currentPage -= 1;
-      }
-    },
-    setCurrentPage: (state, action: PayloadAction<number>) => {
-      state.currentPage = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addMatcher(
-      productsApi.endpoints.getAllProducts.matchFulfilled,
-      (
-        state,
-        action: PayloadAction<{
-          data: {
-            products: Product[];
-            totalPages: number;
-            currentPage: number;
-          };
-          message: string;
-          success: boolean;
-        }>
-      ) => {
-        state.products = action.payload.data.products;
-        state.currentPage = action.payload.data.currentPage;
-        state.totalPages = action.payload.data.totalPages;
-      }
-    );
   },
 });
 
-export const selectProducts = (state: RootState) => state.products.products;
-export const selectCurrentPage = (state: RootState) =>
-  state.products.currentPage;
-export const selectTotalPages = (state: RootState) => state.products.totalPages;
-export const selectCountPerPage = (state: RootState) =>
-  state.products.countPerPage;
-export const { nextPage, previousPage, setCurrentPage } = productsSlice.actions;
-export default productsSlice.reducer;
+export const extendedProductsApiSlice = productsApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getAllProducts: builder.query<ResponseType, ArgsType>({
+      query: (args) => {
+        const argsArr = Object.entries(args);
+        let queryString = "/products?";
+        argsArr.forEach((entry) => {
+          queryString += `${entry[0]}=${entry[1]}&`;
+        });
+        queryString.slice(0, queryString.length - 1);
+        return queryString;
+      },
+      providesTags: ["Product"],
+    }),
+  }),
+});
+
+// getting the result of our query function above
+export const selectProductsResult =
+  extendedProductsApiSlice.endpoints.getAllProducts.select({});
+
+// memoized selector to not to have to execute the function everytime if the data doesn't change
+export const selectProductsData = createSelector(
+  selectProductsResult,
+  (productsResult) => productsResult.data
+);
+export const selectProductsCurrentPage = createSelector(
+  selectProductsResult,
+  (productsResult) => productsResult.data?.data.currentPage
+);
+export const selectProductsTotalPages = createSelector(
+  selectProductsResult,
+  (productsResult) => productsResult.data?.data.totalPages
+);
+// query hook generated from the query above
+export const { useGetAllProductsQuery } = extendedProductsApiSlice;

@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/app/hooks";
-import { useGetAllProductsQuery } from "@/app/services/products.api";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -9,11 +7,16 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { selectProducts } from "@/app/features/products.slice";
+import {
+  selectProductsData,
+  useGetAllProductsQuery,
+} from "@/app/features/products.slice";
+import { useAppSelector } from "@/app/hooks";
 
 export function ProductsCarousel() {
-  const { error, isLoading } = useGetAllProductsQuery({});
-  const products = useAppSelector(selectProducts);
+  const { data, error, isLoading } = useGetAllProductsQuery({});
+  const productsData = useAppSelector(selectProductsData);
+  console.log(productsData);
   if (error) {
     return <div>An Error Has Occured While Fetching Products</div>;
   }
@@ -23,7 +26,7 @@ export function ProductsCarousel() {
   return (
     <Carousel className="w-[80%] m-auto max-w-xs mt-4">
       <CarouselContent>
-        {products?.slice(0, 5).map((product, index) => {
+        {data?.data.products.slice(0, 5).map((product, index) => {
           return (
             <CarouselItem key={index}>
               <div className="p-1">
@@ -59,3 +62,6 @@ export function ProductsCarousel() {
     </Carousel>
   );
 }
+
+/* 
+{/*  */
