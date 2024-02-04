@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types";
-
+import { Link } from "react-router-dom";
 type ProductCardProps = {
   product: Product;
 };
@@ -22,7 +22,9 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
       <CardFooter className="flex justify-between">
         <Button>Add To Cart</Button>
-        <Button variant="outline">More Info</Button>
+        <Button variant={"outline"}>
+          <Link to={product._id}>More Info</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

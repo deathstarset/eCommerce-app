@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "../../constants/index";
-import type { GetAllProductsResponse, ApiResponseGeneric } from "../types";
+import type {
+  GetAllProductsResponse,
+  ApiResponseGeneric,
+  GetProductResponse,
+} from "../types";
 export const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
@@ -21,7 +25,15 @@ export const productsApi = createApi({
       },
       providesTags: ["Product"],
     }),
+    getProduct: builder.query<
+      ApiResponseGeneric<GetProductResponse>,
+      { id: string }
+    >({
+      query: (args) => {
+        return `/products/${args.id}`;
+      },
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetProductQuery } = productsApi;

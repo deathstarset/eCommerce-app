@@ -13,7 +13,7 @@ export const Home = () => {
       <div className="flex flex-col items-center gap-4">
         <ProductsCarousel />
         <Button>
-          <Link to="shop?page=1">View More</Link>
+          <Link to="shop">View More</Link>
         </Button>
       </div>
     </div>
