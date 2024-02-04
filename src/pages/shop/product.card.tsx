@@ -8,10 +8,22 @@ import {
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/types";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "@/app/hooks";
+import { useState } from "react";
+import { addToCart } from "@/app/features/cart.slice";
 type ProductCardProps = {
   product: Product;
 };
 export function ProductCard({ product }: ProductCardProps) {
+  const [addedToCart, setAddedToCart] = useState(false);
+  const dispatch = useAppDispatch();
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    setAddedToCart(true);
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 1000);
+  };
   return (
     <Card className="">
       <CardHeader className="flex flex-col gap-2">
@@ -21,7 +33,9 @@ export function ProductCard({ product }: ProductCardProps) {
         <CardDescription>{product.price}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <Button>Add To Cart</Button>
+        <Button onClick={handleAddToCart} disabled={addedToCart}>
+          {addedToCart ? "Added To Cart" : "Add To Cart"}
+        </Button>
         <Button variant={"outline"}>
           <Link to={product._id}>More Info</Link>
         </Button>

@@ -2,9 +2,10 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainLayout } from "./pages/main.layout";
 import { Home } from "./pages/home";
 import { About } from "./pages/about";
-import { Cart } from "./pages/cart";
+import { Cart } from "./pages/cart/cart";
 import { Contact } from "./pages/contact";
 import { Shop } from "./pages/shop/shop";
+import { Toaster } from "@/components/ui/sonner";
 
 import ScrollToTop from "./scroll.to.top";
 import { ProductInfo } from "./pages/shop/product/product.info";
@@ -27,6 +28,7 @@ export const App = () => {
           </Routes>
         </ScrollToTop>
       </BrowserRouter>
+      <Toaster />
     </div>
   );
 };

@@ -8,16 +8,29 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useGetAllProductsQuery } from "@/app/services/products.api";
+import { addToCart } from "@/app/features/cart.slice";
+import { useAppDispatch } from "@/app/hooks";
+import { useState } from "react";
+import { Product } from "@/types";
 
 export function ProductsCarousel() {
   const { data, error, isLoading } = useGetAllProductsQuery({});
-
+  const [addedToCart, setAddedToCart] = useState(false);
+  const dispatch = useAppDispatch();
+  const handleAddToCart = (product: Product) => {
+    dispatch(addToCart(product));
+    setAddedToCart(true);
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 1000);
+  };
   if (error) {
     return <div>An Error Has Occured While Fetching Products</div>;
   }
   if (isLoading) {
     return <div>Loading......</div>;
   }
+
   return (
     <Carousel className="w-[80%] m-auto max-w-xs mt-4">
       <CarouselContent>
@@ -44,7 +57,12 @@ export function ProductsCarousel() {
                         return `${productDescription}...`;
                       })()}
                     </p>
-                    <Button>Add To Cart</Button>
+                    <Button
+                      onClick={() => handleAddToCart(product)}
+                      disabled={addedToCart}
+                    >
+                      {addedToCart ? "Added To Cart" : "Add To Cart"}
+                    </Button>
                   </CardContent>
                 </Card>
               </div>

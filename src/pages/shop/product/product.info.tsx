@@ -34,10 +34,10 @@ export const ProductInfo = () => {
             <span className="font-semibold">Quantity : </span>
             {data?.data.product.quantity}
           </p>
-          <p>
+          <div>
             <span className="font-semibold">Condition : </span>
             <Badge>{data?.data.product.condition}</Badge>
-          </p>
+          </div>
         </div>
         <div className="flex justify-between gap-2">
           <Button className="w-[100%]">Buy Now</Button>

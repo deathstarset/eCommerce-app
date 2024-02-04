@@ -7,8 +7,12 @@ export const Home = () => {
     <div className="h-fit py-4">
       <img src={hero} alt="" className=" rounded" />
       <div className="flex items-center gap-4 justify-center py-4">
-        <Button>Shop Now</Button>
-        <Button>View Cart</Button>
+        <Button>
+          <Link to="../shop">Shop Now</Link>
+        </Button>
+        <Button>
+          <Link to="../cart">View Cart</Link>
+        </Button>
       </div>
       <div className="flex flex-col items-center gap-4">
         <ProductsCarousel />
