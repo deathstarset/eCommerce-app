@@ -1,27 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "./product.card";
 import { ProductsPagination } from "./shop.pagination";
-import {
-  selectProductsCurrentPage,
-  selectProductsTotalPages,
-  useGetAllProductsQuery,
-} from "@/app/features/products.slice";
+import { useGetAllProductsQuery } from "@/app/services/products.api";
 import { useState } from "react";
-import { useAppSelector } from "@/app/hooks";
 
 export const Shop = () => {
-  const currentPage = useAppSelector(selectProductsCurrentPage);
-  const totalPages = useAppSelector(selectProductsTotalPages);
-
-  const [paginationInfos, setPaginationInfos] = useState({
-    currentPage,
-    totalPages,
-  });
-  console.log(paginationInfos);
-
+  const [page, setPage] = useState(1);
   const { data, isLoading, error } = useGetAllProductsQuery({
     limit: 5,
-    page: 1,
+    page,
   });
 
   if (isLoading) {
@@ -37,7 +24,7 @@ export const Shop = () => {
       {data?.data.products.map((product) => {
         return <ProductCard product={product} key={product._id} />;
       })}
-      <ProductsPagination />
+      <ProductsPagination setPage={setPage} data={data} page={page} />
     </div>
   );
 };

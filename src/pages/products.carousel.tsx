@@ -7,16 +7,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  selectProductsData,
-  useGetAllProductsQuery,
-} from "@/app/features/products.slice";
-import { useAppSelector } from "@/app/hooks";
+import { useGetAllProductsQuery } from "@/app/services/products.api";
 
 export function ProductsCarousel() {
   const { data, error, isLoading } = useGetAllProductsQuery({});
-  const productsData = useAppSelector(selectProductsData);
-  console.log(productsData);
+
   if (error) {
     return <div>An Error Has Occured While Fetching Products</div>;
   }

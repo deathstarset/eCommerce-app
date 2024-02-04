@@ -4,10 +4,6 @@ import { App } from "./App.tsx";
 import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
-import { extendedProductsApiSlice } from "./app/features/products.slice.ts";
-
-// start the fetching once the root component loads
-store.dispatch(extendedProductsApiSlice.endpoints.getAllProducts.initiate({}));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
