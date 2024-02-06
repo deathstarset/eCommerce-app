@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import { connect } from "./utils/connect";
 import { router as productsRouter } from "./routes/product";
+import { router as ordersRouter } from "./routes/order";
 import { errorHandler } from "./utils/error.handler";
 import cors from "cors";
 const PORT = process.env.PORT || 3500;
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/v1/products", productsRouter);
+app.use("/api/v1/orders", ordersRouter);
 app.use(errorHandler);
 
 app.all("*", (req: express.Request, res: express.Response) => {
