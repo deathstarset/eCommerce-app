@@ -3,6 +3,7 @@ import { useAppSelector } from "@/app/hooks";
 import { selectCartItems, selectCartTotal } from "@/app/features/cart.slice";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const ProductsList = () => {
   const items = useAppSelector(selectCartItems);
@@ -31,7 +32,9 @@ export const Cart = () => {
         <h1 className=" text-lg font-semibold">Total</h1>
         <h1 className=" text-lg font-semibold">${totalPrice.toFixed(2)}</h1>
       </Card>
-      <Button>Procced To Payment</Button>
+      <Link to="payment">
+        <Button className="w-full">Procced To Payment</Button>
+      </Link>
     </div>
   );
 };
