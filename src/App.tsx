@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 import ScrollToTop from "./scroll.to.top";
 import { ProductInfo } from "./pages/shop/product/product.info";
 import { Payment } from "./pages/cart/payment/payment";
+
 export const App = () => {
   return (
     <div>

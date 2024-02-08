@@ -4,7 +4,7 @@ import { ProductsCarousel } from "./products.carousel";
 import { Link } from "react-router-dom";
 export const Home = () => {
   return (
-    <div className="h-fit py-4">
+    <div className="py-4 min-h-[86.5vh] h-auto">
       <img src={hero} alt="" className=" rounded" />
       <div className="flex items-center gap-4 justify-center py-4">
         <Button>

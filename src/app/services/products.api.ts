@@ -21,7 +21,8 @@ export const productsApi = createApi({
         argsArr.forEach((entry) => {
           queryString += `${entry[0]}=${entry[1]}&`;
         });
-        queryString.slice(0, queryString.length - 1);
+        queryString = queryString.slice(0, queryString.length - 1);
+
         return queryString;
       },
       providesTags: ["Product"],
