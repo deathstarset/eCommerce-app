@@ -5,6 +5,7 @@ import type {
   ApiResponseGeneric,
   GetProductResponse,
 } from "../types";
+
 export const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),

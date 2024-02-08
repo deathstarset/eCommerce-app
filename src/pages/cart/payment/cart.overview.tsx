@@ -23,7 +23,7 @@ export const CartItemsOverview = () => {
       </div>
       <div className="flex items-center justify-between">
         <p>Total :</p>
-        <p>${total}</p>
+        <p>${total.toFixed(2)}</p>
       </div>
     </Card>
   );

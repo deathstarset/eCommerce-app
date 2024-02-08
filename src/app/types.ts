@@ -1,4 +1,4 @@
-import { Product } from "@/types";
+import { Order, Product } from "@/types";
 
 export type GetAllProductsResponse = {
   products: Product[];
@@ -10,8 +10,12 @@ export type GetProductResponse = {
   product: Product;
 };
 
+export type CreateOrderResponse = {
+  order: Order;
+};
+
 export interface ApiResponseGeneric<T> {
-  status: boolean;
+  success: boolean;
   message: string;
   data: T;
 }

@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CartItemsOverview } from "./cart.overview";
+import { useCreateOrderMutation } from "@/app/services/orders.api";
+import { useAppSelector } from "@/app/hooks";
+import { selectCartItems, selectCartTotal } from "@/app/features/cart.slice";
+import { useState } from "react";
 
 const formFeilds = {
   first_name: "First Name",
@@ -20,6 +24,7 @@ const formFeilds = {
   phone_number: "Phone Number",
   shipping_address: "Shipping Address",
 };
+
 // defining the order form schema
 const orderSchema = z.object({
   first_name: z.string().min(4),
@@ -32,6 +37,7 @@ const orderSchema = z.object({
     ),
   shipping_address: z.string().min(4),
 });
+
 export const OrderForm = () => {
   // defining the form using react hook form
   const form = useForm<z.infer<typeof orderSchema>>({
@@ -44,10 +50,31 @@ export const OrderForm = () => {
       shipping_address: "",
     },
   });
+  // the hook to create the order on the backend
+  const [createOrder, { isLoading, isError }] = useCreateOrderMutation({});
+  const [error, setError] = useState(false);
+  const items = useAppSelector(selectCartItems);
+  const total = useAppSelector(selectCartTotal);
+
   // defining the submit form handler
   const handleSubmit = (values: z.infer<typeof orderSchema>) => {
-    console.log(values);
     // making the post request to to create order on the backend
+    createOrder({
+      personal_info: {
+        ...values,
+      },
+      items,
+      total_amount: total,
+    })
+      .unwrap()
+      .then((response) => {
+        if (!response.success) {
+          setError(true);
+          setTimeout(() => {
+            setError(!error);
+          }, 1000);
+        }
+      });
   };
 
   return (
@@ -77,7 +104,18 @@ export const OrderForm = () => {
           );
         })}
         <CartItemsOverview />
-        <Button type="submit">Submit Order</Button>
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className={`${isLoading && "opacity-35"}`}
+        >
+          {isLoading ? "Submitting Order" : "Submit Order"}
+        </Button>
+        {(error || isError) && (
+          <div className="text-red-500">
+            An Error Has Occured While Submitting The Order
+          </div>
+        )}
       </form>
     </Form>
   );
