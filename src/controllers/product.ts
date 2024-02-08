@@ -1,14 +1,19 @@
 import { ProductModel } from "../models/product";
 import express from "express";
 import { asyncWrapper } from "../utils/async.wrapper";
-
+import fs from "fs";
+import path from "path";
 export const addProduct = asyncWrapper(
   async (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) => {
-    const product = await ProductModel.create(req.body);
+    const product = await ProductModel.create({
+      ...req.body,
+      image: req.file.filename,
+    });
+
     res.status(201).json({
       success: true,
       message: "Product Create Succefully",
@@ -73,6 +78,12 @@ export const deleteProduct = asyncWrapper(
     if (!product) {
       return next(Error("Product Not Found"));
     }
+    // deleting the image from the storage
+    fs.unlink(
+      path.join(__dirname, "..", "..", "uploads", product.image),
+      () => {}
+    );
+
     res.status(201).json({
       success: true,
       message: "Product Deleted Succefully",
@@ -88,18 +99,32 @@ export const editProduct = asyncWrapper(
     next: express.NextFunction
   ) => {
     const { productId } = req.params;
-    const product = await ProductModel.findOneAndUpdate(
-      { _id: productId },
-      req.body,
-      { new: true }
-    );
+    // getting the old image
+    const product = await ProductModel.findById(productId);
     if (!product) {
       return next(Error("Product Not Found"));
     }
-    res.status(200).json({
+    const imageName = product.image;
+
+    // updating the the feilds if there are ones
+    const newProduct = await ProductModel.findOneAndUpdate(
+      { _id: productId },
+      { ...req.body, image: req.file ? req.file.filename : imageName },
+      { new: true }
+    );
+
+    // deleting the old image if a new one has been set
+    if (newProduct.image !== imageName) {
+      fs.unlink(
+        path.join(__dirname, "..", "..", "uploads", imageName),
+        () => {}
+      );
+    }
+
+    res.status(201).json({
       success: true,
       message: "Product Edited Succefully",
-      data: { newProduct: product },
+      data: { newProduct },
     });
   }
 );

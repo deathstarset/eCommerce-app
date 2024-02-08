@@ -1,4 +1,5 @@
 import express from "express";
+import { upload } from "../middlewares/upload";
 import {
   addProduct,
   deleteProduct,
@@ -8,8 +9,8 @@ import {
 } from "../controllers/product";
 
 export const router = express.Router();
-router.post("/", addProduct).get("/", getAllProducts);
+router.post("/", upload.single("image"), addProduct).get("/", getAllProducts);
 router
   .get("/:productId", getProduct)
   .delete("/:productId", deleteProduct)
-  .patch("/:productId", editProduct);
+  .patch("/:productId", upload.single("image"), editProduct);
