@@ -44,7 +44,19 @@ const orderSchema = new mongoose.Schema(
       },
     },
     items: {
-      type: [productSchema],
+      type: [
+        {
+          product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "product",
+          },
+          count: {
+            type: Number,
+            default: 1,
+            min: [0, "product count cannot be negative"],
+          },
+        },
+      ],
     },
     total_amount: {
       type: Number,
