@@ -5,7 +5,6 @@ import { router as productsRouter } from "./routes/product";
 import { router as ordersRouter } from "./routes/order";
 import { errorHandler } from "./utils/error.handler";
 import cors from "cors";
-import crypto from "crypto";
 const PORT = process.env.PORT || 3500;
 const app = express();
 

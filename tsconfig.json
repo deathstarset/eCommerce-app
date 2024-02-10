@@ -5,7 +5,8 @@
     "baseUrl": "src",
     "outDir": "dist",
     "sourceMap": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "lib": ["ES2021.String"]
   },
   "include": ["src/**/*"]
 }
