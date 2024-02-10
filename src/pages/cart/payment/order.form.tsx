@@ -16,7 +16,7 @@ import { useCreateOrderMutation } from "@/app/services/orders.api";
 import { useAppSelector } from "@/app/hooks";
 import { selectCartItems, selectCartTotal } from "@/app/features/cart.slice";
 import { useState } from "react";
-
+import { toast } from "sonner";
 const formFeilds = {
   first_name: "First Name",
   last_name: "Last Name",
@@ -51,7 +51,8 @@ export const OrderForm = () => {
     },
   });
   // the hook to create the order on the backend
-  const [createOrder, { isLoading, isError }] = useCreateOrderMutation({});
+  const [createOrder, { isLoading, isError, isSuccess }] =
+    useCreateOrderMutation({});
   const [error, setError] = useState(false);
   const items = useAppSelector(selectCartItems);
   const total = useAppSelector(selectCartTotal);
@@ -76,6 +77,9 @@ export const OrderForm = () => {
         }
       });
   };
+  if (isSuccess) {
+    toast("Order Sent Succefully");
+  }
 
   return (
     <Form {...form}>

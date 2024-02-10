@@ -1,4 +1,4 @@
-import hero from "../assets/hero.webp";
+import hero from "../../assets/hero.webp";
 import { Button } from "@/components/ui/button";
 import { ProductsCarousel } from "./products.carousel";
 import { Link } from "react-router-dom";

@@ -60,9 +60,9 @@ const cartSlice = createSlice({
     decrmentItemCount: (state, action: PayloadAction<string>) => {
       let totalPrice = state.totalPrice;
       state.items = state.items.map((item) => {
-        totalPrice = totalPrice - item.product.price;
         if (item.product._id === action.payload) {
           if (item.count > 1) {
+            totalPrice = totalPrice - item.product.price;
             return { product: item.product, count: item.count - 1 };
           }
         }

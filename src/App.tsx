@@ -1,10 +1,10 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { MainLayout } from "./pages/main.layout";
-import { Home } from "./pages/home";
-import { About } from "./pages/about";
-import { Cart } from "./pages/cart/cart";
-import { Contact } from "./pages/contact";
-import { Shop } from "./pages/shop/shop";
+import { MainLayout } from "./pages/main/main.layout";
+import { Home } from "./pages/home/home";
+import { About } from "./pages/about/about";
+import { Cart } from "./pages/cart/main/cart";
+import { Contact } from "./pages/contact/contact";
+import { Shop } from "./pages/shop/main/shop";
 import { Toaster } from "@/components/ui/sonner";
 
 import ScrollToTop from "./scroll.to.top";

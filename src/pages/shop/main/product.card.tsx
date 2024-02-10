@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch } from "@/app/hooks";
 import { useState } from "react";
 import { addToCart } from "@/app/features/cart.slice";
+import { UPLOADS_URL } from "@/constants";
 type ProductCardProps = {
   product: Product;
 };
@@ -27,7 +28,12 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="">
       <CardHeader className="flex flex-col gap-2">
-        <img src="https://placehold.co/400" />
+        <img
+          loading="lazy"
+          src={`${UPLOADS_URL}/${product.image}`}
+          alt={`${product.name} Image`}
+          className="h-[300px] rounded"
+        />
         <CardTitle>{product.name}</CardTitle>
         <CardDescription>{product.description}</CardDescription>
         <CardDescription>{product.price}</CardDescription>

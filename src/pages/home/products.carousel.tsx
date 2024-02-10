@@ -12,7 +12,7 @@ import { addToCart } from "@/app/features/cart.slice";
 import { useAppDispatch } from "@/app/hooks";
 import { useState } from "react";
 import { Product } from "@/types";
-
+import { UPLOADS_URL } from "@/constants";
 export function ProductsCarousel() {
   const { data, error, isLoading } = useGetAllProductsQuery({});
   const [addedToCart, setAddedToCart] = useState(false);
@@ -39,10 +39,12 @@ export function ProductsCarousel() {
             <CarouselItem key={index}>
               <div className="p-1">
                 <Card>
-                  <CardContent className="p-7  flex flex-col gap-3">
+                  <CardContent className="p-4  flex flex-col gap-3">
                     <img
-                      src="https://placehold.co/800?text=Hello+World&font=roboto"
-                      alt=""
+                      src={`${UPLOADS_URL}/${product.image}`}
+                      alt={`${product.name} Image`}
+                      loading="lazy"
+                      className="h-[250px] rounded"
                     />
                     <span className="text-xl font-semibold">
                       {product.name}
