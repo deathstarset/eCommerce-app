@@ -17,6 +17,7 @@ import { useAppSelector } from "@/app/hooks";
 import { selectCartItems, selectCartTotal } from "@/app/features/cart.slice";
 import { useState } from "react";
 import { toast } from "sonner";
+
 const formFeilds = {
   first_name: "First Name",
   last_name: "Last Name",
@@ -60,6 +61,7 @@ export const OrderForm = () => {
   // defining the submit form handler
   const handleSubmit = (values: z.infer<typeof orderSchema>) => {
     // making the post request to to create order on the backend
+    console.log(values);
     createOrder({
       personal_info: {
         ...values,
@@ -92,7 +94,14 @@ export const OrderForm = () => {
             <FormField
               key={index}
               control={form.control}
-              name={key}
+              name={
+                key as
+                  | "email"
+                  | "first_name"
+                  | "last_name"
+                  | "phone_number"
+                  | "shipping_address"
+              }
               render={({ field }) => {
                 return (
                   <FormItem>

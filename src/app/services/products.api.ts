@@ -13,15 +13,31 @@ export const productsApi = createApi({
   endpoints: (builder) => ({
     getAllProducts: builder.query<
       ApiResponseGeneric<GetAllProductsResponse>,
-      { sort?: string; limit?: number; page?: number }
+      {
+        sort?: string;
+        limit?: number;
+        page?: number;
+        price?: string;
+        rating?: string;
+        condition?: string;
+      }
     >({
       query: (args) => {
         const argsArr = Object.entries(args);
+
         let queryString = "/products?";
+
         argsArr.forEach((entry) => {
-          queryString += `${entry[0]}=${entry[1]}&`;
+          if (entry[1] !== "") {
+            if (entry[0] === "price" || entry[0] === "rating") {
+              console.log("test");
+            }
+            queryString += `${entry[0]}=${entry[1]}&`;
+          }
         });
         queryString = queryString.slice(0, queryString.length - 1);
+
+        console.log(queryString);
 
         return queryString;
       },

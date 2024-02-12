@@ -12,6 +12,9 @@ export const Shop = () => {
   const { data, isLoading, error } = useGetAllProductsQuery({
     limit: 5,
     page,
+    price: "",
+    rating: "",
+    sort: "",
   });
 
   // filter open and close
