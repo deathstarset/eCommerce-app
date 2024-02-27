@@ -34,7 +34,7 @@ export const getAllProducts = asyncWrapper(
   ) => {
     let queryObject = { ...req.query };
     const excludeFields = ["limit", "page", "sort", "fields"];
-    const filteringFeilds = ["price", "rating", "condition"];
+    const filteringFeilds = ["price", "rating", "condition", "name"];
 
     // exclude the items that has to deal with the query itself and dealing only with the wanted filtering items
     excludeFields.forEach((item) => delete queryObject[item]);
@@ -56,6 +56,11 @@ export const getAllProducts = asyncWrapper(
                 return item.split(":");
               })
           );
+        } else if (field === "name") {
+          query = {
+            $regex: query,
+            $options: "i",
+          };
         }
         return [field, query];
       })

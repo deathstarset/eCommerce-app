@@ -30,7 +30,6 @@ export const productsApi = createApi({
         argsArr.forEach((entry) => {
           if (entry[1] !== "") {
             if (entry[0] === "price" || entry[0] === "rating") {
-              console.log("test");
             }
             queryString += `${entry[0]}=${entry[1]}&`;
           }

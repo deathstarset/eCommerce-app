@@ -15,14 +15,14 @@ export const MainFooter = () => {
     <div className="bg-black py-4 ">
       <div className="w-[95%] mx-auto flex flex-col gap-4">
         <div className="flex flex-col gap-4 md:flex-row md:gap-20">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-3">
             <h1 className="text-white font-medium text-xl">Social Media</h1>
             <div className="flex flex-col gap-1">
               {socials.map((item, index) => {
                 return (
                   <a
                     href=""
-                    className="flex items-center gap-1 border-b-2 border-black hover:border-white w-fit"
+                    className="flex items-center gap-2 border-b-2 border-black hover:border-white w-fit"
                     key={index}
                   >
                     {item.comp}
@@ -32,7 +32,7 @@ export const MainFooter = () => {
               })}
             </div>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-3">
             <h1 className="text-white font-medium text-xl">Information</h1>
             <div className="flex flex-col gap-1">
               {information.map((item, index) => {
@@ -48,7 +48,7 @@ export const MainFooter = () => {
               })}
             </div>
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-3">
             <h1 className="text-white font-medium text-xl">Company</h1>
             <div className="flex flex-col gap-1">
               <p className="text-white">Find The Nearest Location To You</p>

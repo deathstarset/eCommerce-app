@@ -30,8 +30,12 @@ export const productSchema = new mongoose.Schema(
     },
     condition: {
       type: String,
-      enum: ["New", "Used"],
+      enum: ["new", "used"],
       required: [true, "product condition missing"],
+    },
+    category: {
+      type: String,
+      enum: [""],
     },
   },
   { timestamps: true }

@@ -23,8 +23,8 @@ export const MainNavigation = () => {
 
   return (
     <div className="flex items-center justify-between w-[95%] mx-auto py-2">
-      <Link to="/" className="text-xl font-bold">
-        Ecommerce App
+      <Link to="/" className="text-2xl font-semibold">
+        TechWave Hub
       </Link>
       {navBar}
     </div>
