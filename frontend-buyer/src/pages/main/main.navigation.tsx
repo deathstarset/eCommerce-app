@@ -1,61 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AlignJustify, X } from "lucide-react";
-export const MainNavigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleNavOpen = () => {
-    // closing the navbar if its open
-    setIsOpen(!isOpen);
-  };
+import { AlignJustify, ShoppingBag } from "lucide-react";
 
-  const handleLinkClick = () => {
-    setIsOpen(false);
-  };
-  // making the navbar
-  const navBar = (
-    <div className="">
-      <div
-        className={`bg-black w-full fixed z-10 top-0 left-0 h-full overscroll-none opacity-25 ${
-          !isOpen && "hidden"
-        }`}
-        onClick={handleNavOpen}
-      ></div>
-      <div
-        className={`bg-white p-5 flex justify-between fixed  h-full top-0 w-1/2 z-20 transition-all duration-500 ${
-          isOpen ? "right-0" : "right-[-50%]"
-        }`}
-      >
-        <div className="flex flex-col gap-5">
-          <Link to="/" className="font-semibold" onClick={handleLinkClick}>
-            Home
-          </Link>
-          <Link to="/about" className="font-semibold" onClick={handleLinkClick}>
-            About
-          </Link>
-          <Link
-            to="/contact"
-            className="font-semibold"
-            onClick={handleLinkClick}
-          >
-            Contact
-          </Link>
-          <Link to="/cart" className="font-semibold" onClick={handleLinkClick}>
-            Cart
-          </Link>
-        </div>
-        <X onClick={handleNavOpen} size={30} />
-      </div>
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+export const MainNavigation = () => {
+  const [pageWidth, setPageWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPageWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const navBar = pageWidth < 768 ? <MobileNavBar /> : <DesktopNavBar />;
+
+  return (
+    <div className="flex items-center justify-between w-[95%] mx-auto py-2">
+      <Link to="/" className="text-xl font-bold">
+        Ecommerce App
+      </Link>
+      {navBar}
     </div>
   );
+};
+
+const MobileNavBar = () => {
   return (
-    <div className="overflow-hidden">
-      <div className="flex items-center justify-between w-[95%] mx-auto pb-4">
-        <Link to="/" className="text-xl font-bold">
-          Ecommerce App
-        </Link>
-        <AlignJustify onClick={handleNavOpen} size={30} />
-      </div>
-      {navBar}
+    <Sheet>
+      <SheetTrigger asChild>
+        <AlignJustify size={30} />
+      </SheetTrigger>
+      <SheetContent className="flex flex-col gap-3">
+        <SheetClose asChild>
+          <Link to="/" className="font-semibold">
+            Home
+          </Link>
+        </SheetClose>
+        <SheetClose asChild className="">
+          <Link to="about" className="font-semibold">
+            About
+          </Link>
+        </SheetClose>
+        <SheetClose asChild>
+          <Link to="contact" className="font-semibold">
+            Contact
+          </Link>
+        </SheetClose>
+        <SheetClose asChild>
+          <Link to="cart" className="font-semibold">
+            Cart
+          </Link>
+        </SheetClose>
+      </SheetContent>
+    </Sheet>
+  );
+};
+
+const DesktopNavBar = () => {
+  return (
+    <div className="flex items-center gap-10">
+      <Link to="/">Home</Link>
+      <Link to="about">About</Link>
+      <Link to="contact">Contact</Link>
+      <Link to="cart">
+        <ShoppingBag />
+      </Link>
     </div>
   );
 };
